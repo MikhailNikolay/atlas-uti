@@ -68,8 +68,8 @@ mark{background:color-mix(in srgb,var(--warn) 40%,transparent);color:inherit;bor
   .nav{display:none}
   .brand small{display:none}
   .bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px;padding-bottom:max(6px,env(safe-area-inset-bottom));justify-content:space-around}
-  .bn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;font-size:.6rem;font-weight:700;color:var(--dim);padding:4px 0;border-radius:10px}
-  .bn .bi{width:30px;height:24px;border-radius:8px;display:grid;place-items:center}
+  .bn{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;font-size:.6rem;font-weight:700;color:var(--dim);padding:4px 0;border-radius:10px}
+  .bn .bi{width:28px;height:24px;border-radius:8px;display:grid;place-items:center}
   .bn.active{color:var(--c)}
   .bn.active .bi{background:color-mix(in srgb,var(--c) 18%,transparent)}
 }
@@ -284,6 +284,34 @@ table.t tr:hover td:first-child{background:color-mix(in srgb,var(--mc) 8%,var(--
 .fc-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:700;color:var(--muted)}
 .chip.on{background:var(--c,var(--mc));border-color:var(--c,var(--mc));color:#fff}
+/* ---------- dicionário ---------- */
+.dict-tools{position:sticky;top:104px;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 0 8px;margin-top:8px}
+@media (max-width:760px){.dict-tools{top:62px}}
+.dq{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 14px;font:inherit;font-size:.92rem;color:var(--text);outline:none;margin-bottom:10px}
+.dq:focus{border-color:var(--mc)}
+.dict-tools .fc-bar{margin-bottom:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.dict-tools .chip{flex:none}
+.az{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none}
+.az button{flex:1 0 24px;min-width:24px;height:28px;border-radius:7px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:.74rem;font-weight:800;cursor:pointer}
+.az button:hover:not(:disabled){background:var(--mc);border-color:var(--mc);color:#fff}
+.az button:disabled{opacity:.25;cursor:default}
+@media (max-width:760px){.az{flex-wrap:wrap}.az button{flex:1 0 calc(100% / 13 - 3px);min-width:0;height:26px}}
+.dl-letter{font-size:1.4rem;font-weight:900;color:var(--mc);margin:22px 0 10px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+@media (max-width:400px){.dgrid{grid-template-columns:minmax(0,1fr)}}
+.dcard{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c);border-radius:14px;padding:14px 16px;min-width:0;overflow-wrap:anywhere}
+.dhead{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.dhead b{font-size:1.08rem;line-height:1.25}
+.dtag{flex:none;font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.4px;padding:3px 8px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.dext{font-size:.8rem;color:var(--muted);font-style:italic;margin-top:3px}
+.dbody .dd{margin:10px 0 0;font-size:.93rem;line-height:1.5}
+.dbody .dp{margin:8px 0 0;font-size:.84rem;line-height:1.5;color:var(--muted);background:var(--card2);border-radius:10px;padding:8px 10px}
+.dbody .dp span{display:block;font-size:.62rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--c);margin-bottom:2px}
+.dhint{display:none;margin-top:10px;font-size:.75rem;font-weight:700;color:var(--dim)}
+#dList.memo .dcard{cursor:pointer}
+#dList.memo .dcard:not(.rev) .dbody{display:none}
+#dList.memo .dcard:not(.rev) .dhint{display:block}
+.dcard.flash-hl{animation:hl 1.6s ease}
 .fc-stage{perspective:1400px;max-width:720px;margin:0 auto}
 .fc{position:relative;height:300px;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.2,.8,.2,1);cursor:pointer}
 .fc.flip{transform:rotateY(180deg)}
@@ -382,7 +410,7 @@ const MODULES = [
 ];
 
 const TOPICS = {}, COMPARE = {}, TRAIN = {};
-const DRILLS = [], CASES = [], FLASH = [], QUEST = [];
+const DRILLS = [], CASES = [], FLASH = [], QUEST = [], DICT = [];
 
 const PLAN = [
   { min: '5 min', t: 'Lousa de números (modo esconder) para ver o que você já sabe', go: ['home'] },
@@ -1744,6 +1772,226 @@ QUEST.push(
 { m: 'vm', q: 'Pressão de cuff recomendada:', o: ['10–15 cmH₂O', '20–30 cmH₂O', '35–40 cmH₂O', '> 40 cmH₂O'], a: 1, e: 'Checar nos primeiros 30 min e rotineiramente.' }
 );
 
+/* Dicionário: [termo, por extenso, módulo, o que é, na UTI / na prova] */
+[
+  /* ---------------- Avaliação do doente crítico ---------------- */
+  ['UTI', 'Unidade de Terapia Intensiva', 'aval', 'Setor do hospital para quem tem risco de vida e precisa de monitorização e suporte o tempo todo.', 'Paciente crítico = disfunção de órgão ou risco iminente dela. Crítico NÃO é sinônimo de intubado.'],
+  ['Paciente crítico', '', 'aval', 'Paciente com um ou mais órgãos falhando (ou prestes a falhar), que precisa de suporte para sobreviver.', 'Gravidade é trajetória: olhe se está piorando ou melhorando, não só o número de agora.'],
+  ['Sinais vitais', '', 'aval', 'Os números básicos do corpo: PA, FC, FR, temperatura, SpO₂ (e dor).', 'Antes de mobilizar, sempre checar estabilidade dos sinais vitais.'],
+  ['PA', 'Pressão Arterial', 'aval', 'Força que o sangue faz na parede das artérias. Dada como sistólica/diastólica (ex.: 120/80).', 'PA = DC × RVS. Se cai, pense: bomba fraca, pouco volume ou vaso dilatado.'],
+  ['PAS / PAD', 'Pressão Arterial Sistólica / Diastólica', 'aval', 'Sistólica: pressão quando o coração contrai (a "de cima"). Diastólica: quando relaxa (a "de baixo").', 'PAS < 90 é hipotensão.'],
+  ['PAM', 'Pressão Arterial Média', 'aval', 'A pressão "média" que realmente perfunde os órgãos durante o ciclo cardíaco.', 'Alvo > 65 mmHg. Cálculo: (PAS + 2 × PAD) / 3. PAM ≈ DC × RVS.'],
+  ['PAI', 'Pressão Arterial Invasiva', 'aval', 'Medida da PA por um cateter dentro da artéria (geralmente radial), batimento a batimento.', 'Usada em choque e com drogas vasoativas. Cuidado com o cateter ao mobilizar.'],
+  ['FC', 'Frequência Cardíaca', 'aval', 'Quantas vezes o coração bate por minuto.', 'Normal 60–100 bpm. Taquicardia é um dos primeiros sinais de choque.'],
+  ['FR', 'Frequência Respiratória', 'aval', 'Quantas vezes a pessoa respira por minuto (irpm).', 'Normal 12–20. FR > 30 = alerta de falência respiratória. Na VM também é um parâmetro ajustado.'],
+  ['DC', 'Débito Cardíaco', 'aval', 'Quantidade de sangue que o coração bombeia por minuto.', 'DC = VS × FC. Normal ~4–8 L/min.'],
+  ['VS', 'Volume Sistólico', 'aval', 'Quanto sangue o coração ejeta em cada batida.', 'Depende de pré-carga, contratilidade e pós-carga.'],
+  ['RVS', 'Resistência Vascular Sistêmica', 'aval', 'O quanto os vasos estão "apertados" (contraídos) ou "abertos" (dilatados).', 'RVS baixa = choque distributivo (sepse). RVS alta = vasos fechados compensando (hipovolêmico, cardiogênico).'],
+  ['Pré-carga', '', 'aval', 'O quanto o coração "enche" de sangue antes de contrair (volume que chega).', 'Cai no choque hipovolêmico (perdeu volume).'],
+  ['Pós-carga', '', 'aval', 'A resistência que o coração precisa vencer para ejetar o sangue.', 'Relacionada à RVS. PEEP alta reduz pós-carga do VE (ajuda no EAP cardiogênico).'],
+  ['Choque', '', 'aval', 'Falta de oxigênio nos tecidos porque a circulação não está dando conta (perfusão inadequada).', 'Sinais: hipotensão, taquicardia, pele fria/moteada, lactato alto, pouca urina, confusão. 4 tipos: hipovolêmico, cardiogênico, distributivo, obstrutivo.'],
+  ['Choque hipovolêmico', '', 'aval', 'Choque por perda de volume (sangue ou líquido): o "tanque" ficou vazio.', 'Hemorragia, desidratação, queimadura. DC baixo, RVS alta. Tratamento: repor volume.'],
+  ['Choque cardiogênico', '', 'aval', 'Choque porque a bomba (coração) falhou.', 'IAM, ICC grave. DC baixo, RVS alta, congestão pulmonar. Droga: dobutamina.'],
+  ['Choque distributivo', '', 'aval', 'Choque porque os vasos dilataram demais e o sangue "se espalhou".', 'Sepse (o mais comum), anafilaxia, neurogênico. RVS baixa, pele quente no início. Droga: noradrenalina.'],
+  ['Choque obstrutivo', '', 'aval', 'Choque porque algo bloqueia a saída ou o enchimento do coração.', 'TEP maciço, pneumotórax hipertensivo, tamponamento cardíaco. Tratar a causa (desobstruir).'],
+  ['Sepse', '', 'aval', 'Disfunção de órgão causada por resposta desregulada do corpo a uma infecção.', 'Choque séptico: precisa de vasopressor para PAM ≥ 65 e lactato > 2 mesmo com volume.'],
+  ['SDMO', 'Síndrome de Disfunção de Múltiplos Órgãos', 'aval', 'Quando vários órgãos falham ao mesmo tempo (pulmão, rim, fígado, cérebro...).', 'Comum na sepse grave. Quanto mais órgãos, maior a mortalidade.'],
+  ['SOFA', 'Sequential Organ Failure Assessment', 'aval', 'Escore que pontua a falência de 6 sistemas (respiratório, coagulação, fígado, cardiovascular, neuro, rim).', 'Aumento ≥ 2 pontos com infecção = sepse.'],
+  ['APACHE', 'Acute Physiology and Chronic Health Evaluation', 'aval', 'Escore de gravidade que estima o risco de morte na UTI nas primeiras 24 h.', 'Quanto maior, mais grave.'],
+  ['DVA', 'Drogas Vasoativas', 'aval', 'Remédios na veia que mexem na pressão e na força do coração (vasopressores e inotrópicos).', 'Dose alta ou subindo = cautela/contraindicação relativa para mobilizar fora do leito.'],
+  ['Vasopressor', '', 'aval', 'Droga que contrai os vasos para subir a pressão.', 'Ex.: noradrenalina, vasopressina, adrenalina.'],
+  ['Inotrópico', '', 'aval', 'Droga que aumenta a força de contração do coração.', 'Ex.: dobutamina. Usado no choque cardiogênico.'],
+  ['NA', 'Noradrenalina', 'aval', 'Principal vasopressor: fecha os vasos e sobe a PA.', '1ª linha no choque séptico.'],
+  ['Dobutamina', '', 'aval', 'Inotrópico: faz o coração bater mais forte.', 'Choque cardiogênico (bomba fraca).'],
+  ['Vasopressina', '', 'aval', 'Vasopressor que se soma à noradrenalina quando ela sozinha não basta.', 'Associação no choque séptico refratário.'],
+  ['Lactato', '', 'exames', 'Substância produzida quando a célula trabalha sem oxigênio suficiente.', 'Lactato > 2 mmol/L = hipoperfusão. Marcador de choque e de resposta ao tratamento.'],
+  ['Perfusão', '', 'aval', 'Chegada de sangue (e oxigênio) aos tecidos.', 'Avalie: TEC (tempo de enchimento capilar), pele, diurese, consciência, lactato.'],
+  ['TEC', 'Tempo de Enchimento Capilar', 'aval', 'Tempo para a cor voltar à unha/pele depois de apertar.', 'Normal < 3 s. Aumentado = má perfusão.'],
+  ['Diurese', '', 'aval', 'Quantidade de urina produzida.', 'Oligúria (< 0,5 mL/kg/h) é sinal de má perfusão renal.'],
+  ['GCS / Glasgow', 'Escala de Coma de Glasgow', 'aval', 'Escala de 3 a 15 que mede o nível de consciência: abertura ocular, resposta verbal e resposta motora.', 'Glasgow < 8 (ou ≤ 8) = indicação de IOT para proteger a via aérea. 15 = normal.'],
+  ['RASS', 'Richmond Agitation-Sedation Scale', 'aval', 'Escala de sedação/agitação de −5 (não acorda) a +4 (combativo). 0 = alerta e calmo.', 'Alvo habitual: 0 a −2 (sedação leve). Base para decidir mobilizar e fazer o CAM-ICU.'],
+  ['CAM-ICU', 'Confusion Assessment Method for the ICU', 'aval', 'Teste rápido à beira do leito para detectar delirium.', 'Só aplica se RASS ≥ −3. Delirium aumenta tempo de VM e mortalidade.'],
+  ['Delirium', '', 'aval', 'Confusão mental aguda e flutuante, com desatenção.', 'Muito comum na UTI. Mobilização precoce ajuda a prevenir.'],
+  ['Sedação', '', 'aval', 'Remédios para deixar o paciente calmo/dormindo (ex.: propofol, midazolam).', 'Sedação profunda atrapalha desmame e mobilização: preferir sedação leve.'],
+  ['MRC', 'Medical Research Council (escala de força)', 'aval', 'Teste de força de 6 grupos musculares de cada lado, nota 0–5 cada, total 0–60.', 'MRC < 48 = fraqueza adquirida na UTI. Precisa de paciente acordado e colaborativo.'],
+  ['FAUTI', 'Fraqueza Adquirida na UTI', 'aval', 'Fraqueza muscular generalizada que aparece durante a internação na UTI.', 'Diagnóstico: MRC < 48. Fatores: imobilidade, sepse, sedação, corticoide, bloqueador neuromuscular.'],
+  ['IMS', 'ICU Mobility Scale', 'aval', 'Escala de 0 a 10 do maior nível de mobilidade que o paciente alcançou.', '0 = nada (deitado passivo) até 10 = marcha independente > 5 m. Registre o MAIOR nível do dia.'],
+  ['Mobilização precoce', '', 'aval', 'Tirar o paciente do leito (sentar, ficar em pé, andar) o quanto antes, com segurança.', 'Reduz fraqueza, delirium e tempo de VM. Checar critérios cardiovasculares, respiratórios e neurológicos antes.'],
+  ['Sedestação', '', 'aval', 'Colocar o paciente sentado (à beira do leito ou na poltrona).', 'Passo importante da mobilização. Observe resposta da PA e FC à mudança postural.'],
+  ['Ortostatismo', '', 'aval', 'Ficar em pé.', 'Pode causar hipotensão postural: monitorar PA, FC e sintomas.'],
+  ['CVC', 'Cateter Venoso Central', 'aval', 'Cateter grosso numa veia central (jugular, subclávia, femoral) para drogas e medidas.', 'Atenção ao mobilizar. Femoral não impede mobilização em geral, mas exige cuidado.'],
+  ['PVC', 'Pressão Venosa Central', 'aval', 'Pressão no átrio direito, medida pelo CVC.', 'Estimativa grosseira de volume; pouco usada isoladamente hoje.'],
+  ['PIC', 'Pressão Intracraniana', 'aval', 'Pressão dentro do crânio.', 'Normal < 15–20 mmHg. Alta = HIC.'],
+  ['HIC', 'Hipertensão Intracraniana', 'vm', 'Pressão dentro do crânio aumentada (inchaço, sangramento, tumor).', 'Na VM: PaCO₂ 35–45 e PaO₂ 80–120. CO₂ alto dilata vasos cerebrais e piora a HIC: evitar hipercapnia permissiva.'],
+  ['IAM', 'Infarto Agudo do Miocárdio', 'aval', 'Morte de parte do músculo do coração porque uma artéria coronária entupiu.', 'Pode causar choque cardiogênico e EAP. Contraindica mobilização na fase aguda/instável. Meta de SpO₂ sem hiperóxia.'],
+  ['IC / ICC', 'Insuficiência Cardíaca (Congestiva)', 'aval', 'Coração fraco que não bombeia direito, fazendo líquido acumular (pulmão, pernas).', 'Descompensada pode dar EAP e derrame pleural. CPAP/VNI ajuda no EAP cardiogênico.'],
+  ['AVC', 'Acidente Vascular Cerebral', 'aval', 'Parte do cérebro sofre por falta de sangue (isquêmico) ou por sangramento (hemorrágico).', 'Risco de rebaixamento (Glasgow) e broncoaspiração.'],
+  ['TCE', 'Traumatismo Cranioencefálico', 'aval', 'Lesão no cérebro causada por trauma na cabeça.', 'Risco de HIC: controle de CO₂ e O₂ na VM.'],
+  ['HAS', 'Hipertensão Arterial Sistêmica', 'aval', 'Pressão alta crônica.', 'Comorbidade comum.'],
+  ['HDA', 'Hemorragia Digestiva Alta', 'vni', 'Sangramento no esôfago, estômago ou duodeno.', 'Contraindicação à VNI (risco de aspiração).'],
+  ['RCP', 'Ressuscitação Cardiopulmonar', 'vni', 'Manobras de compressão torácica e ventilação na parada cardíaca.', 'PCR = indicação de IOT, contraindicação absoluta à VNI.'],
+  ['PCR', 'Parada Cardiorrespiratória (ou Proteína C Reativa, no laboratório)', 'aval', 'Parada: coração e respiração param. No laboratório, PCR é um marcador de inflamação/infecção.', 'Leia pelo contexto: "PCR alta" no exame = inflamação; "PCR" na VNI = parada.'],
+  ['Comorbidade', '', 'aval', 'Doença que o paciente já tinha antes (HAS, diabetes, DPOC...).', 'Pesa na gravidade e no prognóstico.'],
+
+  /* ---------------- Exames complementares ---------------- */
+  ['Gasometria arterial', '', 'exames', 'Exame de sangue da artéria que mostra pH, O₂, CO₂ e bicarbonato.', 'Leia em passos: pH → PaCO₂ → HCO₃⁻ → quem explica o pH → compensação → oxigenação.'],
+  ['pH', 'Potencial hidrogeniônico', 'exames', 'Mede se o sangue está ácido ou alcalino.', 'Normal 7,35–7,45. < 7,35 = acidose; > 7,45 = alcalose.'],
+  ['PaO₂', 'Pressão parcial arterial de O₂', 'exames', 'Quanto oxigênio está dissolvido no sangue arterial.', 'Normal 80–100 mmHg. < 60 = hipoxemia que define IRpA hipoxêmica.'],
+  ['PaCO₂', 'Pressão parcial arterial de CO₂', 'exames', 'Quanto gás carbônico tem no sangue. É o lado RESPIRATÓRIO da gaso.', 'Normal 35–45 mmHg. Alto = hipoventilação (acidose respiratória). Baixo = hiperventilação.'],
+  ['HCO₃⁻', 'Bicarbonato', 'exames', 'A "base" do sangue que neutraliza ácido. É o lado METABÓLICO da gaso.', 'Normal 22–26 mEq/L. Baixo = acidose metabólica; alto = alcalose metabólica (ou compensação de DPOC).'],
+  ['BE', 'Base Excess (excesso de base)', 'exames', 'Quanto de base sobra ou falta no sangue (componente metabólico).', 'Normal −2 a +2. Negativo = acidose metabólica.'],
+  ['SpO₂', 'Saturação periférica de O₂', 'o2', 'Porcentagem da hemoglobina carregando O₂, medida pelo oxímetro no dedo.', 'Alvo 92–96% na maioria; 88–92% no retentor de CO₂ (DPOC). > 96% = reduzir O₂.'],
+  ['SaO₂', 'Saturação arterial de O₂', 'exames', 'A mesma ideia da SpO₂, mas medida na gasometria (sangue arterial).', 'É a medida "padrão-ouro" da saturação.'],
+  ['Acidose respiratória', '', 'exames', 'pH baixo porque o CO₂ subiu (o paciente está ventilando pouco).', 'pH < 7,35 + PaCO₂ > 45. Ex.: DPOC exacerbado, sedação excessiva, fadiga. Trata-se aumentando a ventilação (VNI/VM).'],
+  ['Alcalose respiratória', '', 'exames', 'pH alto porque o CO₂ caiu (o paciente está respirando demais).', 'pH > 7,45 + PaCO₂ < 35. Ex.: ansiedade, dor, hipoxemia, VM com FR/VC alto demais.'],
+  ['Acidose metabólica', '', 'exames', 'pH baixo porque o bicarbonato caiu (sobrou ácido no corpo).', 'pH < 7,35 + HCO₃⁻ < 22. Ex.: choque/lactato, cetoacidose, insuficiência renal. O corpo compensa respirando rápido.'],
+  ['Alcalose metabólica', '', 'exames', 'pH alto porque o bicarbonato subiu.', 'pH > 7,45 + HCO₃⁻ > 26. Ex.: vômitos, diuréticos.'],
+  ['Compensação', '', 'exames', 'Quando o outro sistema tenta corrigir o pH (pulmão compensa o metabólico; rim compensa o respiratório).', 'Compensado: pH normal com PaCO₂ e HCO₃⁻ alterados no MESMO sentido. A compensação nunca passa do ponto.'],
+  ['Distúrbio misto', '', 'exames', 'Dois distúrbios ao mesmo tempo (ex.: acidose respiratória + metabólica).', 'Pista: PaCO₂ e HCO₃⁻ alterados em sentidos opostos, empurrando o pH para o mesmo lado.'],
+  ['RX', 'Radiografia (raio X) de tórax', 'exames', 'Imagem do tórax para ver pulmão, coração, pleura, tubos e cateteres.', 'Branco = denso (líquido, osso, consolidação). Preto = ar. Sempre compare com um RX normal.'],
+  ['TC', 'Tomografia Computadorizada', 'exames', 'Exame de imagem em "fatias", muito mais detalhado que o RX.', 'Na SDRA mostra consolidações e vidro fosco em regiões dependentes (costas).'],
+  ['Consolidação', '', 'exames', 'Área do pulmão em que o ar foi trocado por líquido/pus: fica branca no RX.', 'Típica de pneumonia bacteriana, com broncograma aéreo.'],
+  ['Broncograma aéreo', '', 'exames', 'Brônquios cheios de ar aparecendo pretos dentro de uma área branca (consolidada).', 'Sinal clássico de consolidação/pneumonia.'],
+  ['Vidro fosco', '', 'exames', 'Pulmão "acinzentado", meio opaco, mas ainda dá para ver os vasos.', 'Pneumonia viral, COVID, SDRA inicial.'],
+  ['Hipertransparência', '', 'exames', 'Área mais preta que o normal no RX (excesso de ar).', 'Pneumotórax (sem trama vascular) ou DPOC/enfisema (hiperinsuflação).'],
+  ['Hiperinsuflação', '', 'exames', 'Pulmão com ar preso demais, aumentado.', 'DPOC: cúpulas retificadas, espaços intercostais largos. Na VM, risco de auto-PEEP.'],
+  ['Atelectasia', '', 'exames', 'Colabamento (fechamento) de uma parte do pulmão: os alvéolos murcham.', 'RX: opacidade que PUXA as estruturas para o mesmo lado. Causas: secreção, hipoventilação. Fisioterapia reexpande.'],
+  ['Derrame pleural', '', 'exames', 'Líquido acumulado entre o pulmão e a parede do tórax (espaço pleural).', 'RX: base branca e seio costofrênico apagado (menisco). EMPURRA estruturas para o lado oposto se grande.'],
+  ['Pneumotórax (PNX)', '', 'exames', 'Ar no espaço pleural, fazendo o pulmão colabar.', 'RX: área preta sem trama vascular + linha pleural. Hipertensivo = choque obstrutivo. PNX não drenado contraindica VNI.'],
+  ['Pneumonia (PNM)', '', 'exames', 'Infecção do pulmão que enche os alvéolos de secreção.', 'Bacteriana: consolidação lobar. Viral: vidro fosco difuso. Aspirativa: bases, mais à direita.'],
+  ['Pneumonia aspirativa', '', 'exames', 'Pneumonia causada por entrada de conteúdo da boca/estômago no pulmão (broncoaspiração).', 'Aparece nas regiões dependentes (bases, mais à direita). Risco: rebaixamento, disfagia.'],
+  ['PAV', 'Pneumonia Associada à Ventilação mecânica', 'vm', 'Pneumonia que aparece depois de 48 h de intubação.', 'Prevenção: cabeceira 30–45°, cuff 20–30 cmH₂O, higiene oral, despertar diário, desmame precoce.'],
+  ['EAP', 'Edema Agudo de Pulmão', 'exames', 'Pulmão "alagado" de líquido de repente, geralmente porque o coração falhou.', 'RX: "asa de borboleta" peri-hilar + cardiomegalia. Tratamento ventilatório: CPAP ~10 cmH₂O ou VNI.'],
+  ['Cardiomegalia', '', 'exames', 'Coração aumentado no RX.', 'Índice cardiotorácico > 0,5. Sugere IC.'],
+  ['TB', 'Tuberculose', 'exames', 'Infecção pulmonar pelo bacilo de Koch.', 'RX: opacidades e cavitações nos ápices (lobos superiores).'],
+  ['TEP', 'Tromboembolismo Pulmonar', 'exames', 'Coágulo (trombo) que entope uma artéria do pulmão.', 'Causa espaço morto (ventila mas não perfunde) e pode dar choque obstrutivo. RX muitas vezes normal.'],
+  ['Hb', 'Hemoglobina', 'exames', 'Proteína das hemácias que carrega o oxigênio.', 'Baixa (anemia) reduz a oferta de O₂ mesmo com SpO₂ boa. Hb < 7 costuma pedir cautela na mobilização.'],
+  ['Leucócitos', '', 'exames', 'Células de defesa no sangue.', 'Altos (leucocitose) sugerem infecção/inflamação.'],
+  ['Plaquetas', '', 'exames', 'Células que ajudam a coagular.', 'Muito baixas (plaquetopenia) = risco de sangramento: cuidado com técnicas agressivas.'],
+  ['Eletrólitos', 'Na⁺, K⁺, Ca²⁺, Mg²⁺', 'exames', 'Sais minerais do sangue que controlam músculo, nervo e coração.', 'Potássio alterado pode dar arritmia; cuidado ao mobilizar.'],
+  ['Ureia / Creatinina', '', 'exames', 'Exames que mostram como o rim está funcionando.', 'Subindo = lesão renal.'],
+  ['Troponina', '', 'exames', 'Marcador de lesão do músculo cardíaco.', 'Elevada em IAM.'],
+
+  /* ---------------- Oxigenioterapia ---------------- */
+  ['Hipoxemia', '', 'o2', 'Pouco oxigênio NO SANGUE.', 'PaO₂ < 80 (leve 60–79, moderada 40–59, grave < 40) ou SpO₂ < 90%. É do sangue; hipóxia é do tecido.'],
+  ['Hipóxia', '', 'o2', 'Pouco oxigênio NOS TECIDOS (nas células).', 'Pode existir sem hipoxemia (ex.: anemia, choque, intoxicação por CO).'],
+  ['Hiperóxia', '', 'o2', 'Oxigênio demais no sangue.', 'PaO₂ > 120 (tóxico > 200–300). Faz mal: radicais livres, vasoconstrição, atelectasia de absorção. O₂ é remédio.'],
+  ['Hipercapnia', '', 'o2', 'CO₂ alto no sangue.', 'PaCO₂ > 45. Causa: hipoventilação. Pode dar sonolência (carbonarcose).'],
+  ['Hipocapnia', '', 'o2', 'CO₂ baixo no sangue.', 'PaCO₂ < 35. Causa: hiperventilação.'],
+  ['Retentor de CO₂', '', 'o2', 'Paciente que acumula CO₂ cronicamente (ex.: DPOC grave).', 'Alvo de SpO₂ 88–92%. O₂ demais pode piorar a hipercapnia.'],
+  ['FiO₂', 'Fração inspirada de O₂', 'o2', 'A porcentagem de oxigênio no ar que a pessoa respira.', 'Ar ambiente = 21% (0,21). Na VM: a menor possível, ≤ 0,6.'],
+  ['P/F', 'Relação PaO₂ / FiO₂', 'o2', 'Mostra se o pulmão está oxigenando bem para o tanto de O₂ que recebe.', 'Normal > 400. SDRA: leve 201–300, moderada 101–200, grave ≤ 100. Use FiO₂ em decimal (0,5).'],
+  ['S/F', 'Relação SpO₂ / FiO₂', 'o2', 'Alternativa à P/F usando o oxímetro, sem gasometria.', 'Só vale se SpO₂ ≤ 97%. Leve 236–315, moderada 149–235, grave ≤ 148.'],
+  ['V/Q', 'Relação ventilação / perfusão', 'o2', 'O equilíbrio entre o ar que chega ao alvéolo (V) e o sangue que passa por ele (Q).', 'Alteração V/Q é a causa mais comum de hipoxemia e melhora com O₂.'],
+  ['Shunt', '', 'o2', 'Sangue passa por alvéolos que NÃO ventilam (cheios de líquido ou colabados): V/Q = 0.', 'NÃO melhora só com O₂: precisa recrutar (PEEP, CPAP, prona). Ex.: pneumonia extensa, SDRA, atelectasia.'],
+  ['Espaço morto', '', 'o2', 'Ar que chega a alvéolos SEM sangue passando: ventila mas não troca gás (V/Q alto).', 'Ex.: TEP. Aumenta o CO₂.'],
+  ['Hipoventilação', '', 'o2', 'Ventilar pouco: entra e sai pouco ar por minuto.', 'Sobe o CO₂ (e cai o O₂). Ex.: sedação, doença neuromuscular, fadiga.'],
+  ['DO₂', 'Oferta (delivery) de O₂', 'o2', 'Quanto oxigênio chega aos tecidos por minuto.', 'DO₂ = DC × CaO₂. Depende de coração, Hb e saturação.'],
+  ['VO₂', 'Consumo de O₂', 'o2', 'Quanto oxigênio os tecidos usam por minuto.', 'Aumenta com febre, agitação, exercício.'],
+  ['CaO₂', 'Conteúdo arterial de O₂', 'o2', 'Total de O₂ no sangue arterial (preso na Hb + dissolvido).', 'Depende principalmente da Hb e da SaO₂.'],
+  ['PiO₂ / PAO₂', 'Pressão inspirada / alveolar de O₂', 'o2', 'Pressão de O₂ no ar inspirado e dentro do alvéolo.', 'Cai em altitude. Gradiente alvéolo-arterial alto = problema no pulmão.'],
+  ['Oxigenioterapia', '', 'o2', 'Uso de O₂ suplementar como tratamento.', 'O₂ é fármaco: indicação, dose, alvo (SpO₂) e desmame. Prescreva meta, não litros. Reavaliar em 20–30 min.'],
+  ['Baixo fluxo', '', 'o2', 'Dispositivo que fornece menos fluxo que o paciente puxa; ele completa com ar ambiente.', 'FiO₂ varia com a respiração do paciente. Ex.: cateter nasal, máscara simples.'],
+  ['Alto fluxo', '', 'o2', 'Dispositivo que fornece todo (ou mais que) o fluxo que o paciente precisa.', 'FiO₂ fixa e precisa. Ex.: Venturi, CNAF.'],
+  ['CN', 'Cateter Nasal', 'o2', 'Tubinho com pontas nas narinas que leva O₂.', '1–6 L/min, FiO₂ ~24–40%. Cada litro ≈ +4%.'],
+  ['Máscara simples', '', 'o2', 'Máscara sobre nariz e boca, sem reservatório.', '5–10 L/min, FiO₂ ~35–50%. Nunca < 5 L/min (reinala CO₂).'],
+  ['Venturi', 'Máscara de Venturi', 'o2', 'Máscara com válvulas coloridas que misturam O₂ e ar numa FiO₂ fixa.', 'FiO₂ 24–50% precisa. Ótima no DPOC (controle fino). Cada cor = um fluxo e uma FiO₂.'],
+  ['Máscara com reservatório', 'Máscara não reinalante', 'o2', 'Máscara com bolsa que acumula O₂ puro.', '10–15 L/min, FiO₂ ~60–90%. A bolsa deve ficar cheia. Ponte para algo mais definitivo.'],
+  ['CNAF', 'Cânula Nasal de Alto Fluxo', 'o2', 'Cânula nasal que manda muito fluxo de ar aquecido e umidificado, com FiO₂ controlada.', '30–60 L/min, FiO₂ 21–100%, 34–37 °C. Gera PEEP ~3–5 cmH₂O (boca fechada) e lava o espaço morto.'],
+  ['ROX', 'Índice ROX', 'o2', 'Índice para prever se a CNAF vai dar certo: (SpO₂/FiO₂) / FR.', 'ROX ≥ 4,88 = boa chance de sucesso. Baixo = risco de IOT.'],
+  ['Umidificação', '', 'o2', 'Acrescentar vapor de água ao gás inspirado.', 'Gás seco resseca a via aérea e espessa secreção. Necessária em fluxos altos.'],
+  ['HME / HMEF', 'Heat and Moisture Exchanger (Filter)', 'vm', 'Filtro "nariz artificial" que aquece e umidifica o ar no circuito do ventilador.', 'Aumenta espaço morto e resistência. HMEF também filtra vírus/bactérias.'],
+  ['Atelectasia de absorção', '', 'o2', 'Colabamento de alvéolos porque o O₂ alto é absorvido e o nitrogênio "de sustentação" some.', 'Um dos malefícios da FiO₂ alta.'],
+
+  /* ---------------- VNI e IRpA ---------------- */
+  ['IRpA', 'Insuficiência Respiratória Aguda', 'vni', 'Quando o sistema respiratório de repente não consegue oxigenar e/ou tirar CO₂ do sangue.', 'Tipo 1 (hipoxêmica): PaO₂ < 60. Tipo 2 (hipercápnica): PaCO₂ > 45 com pH < 7,35.'],
+  ['IRpA hipoxêmica (tipo 1)', '', 'vni', 'Falha em OXIGENAR: falta O₂ no sangue.', 'PaO₂ < 60 em ar ambiente. Ex.: pneumonia, SDRA, EAP. Problema de troca (V/Q, shunt).'],
+  ['IRpA hipercápnica (tipo 2)', '', 'vni', 'Falha em VENTILAR: o CO₂ acumula.', 'PaCO₂ > 45 e pH < 7,35. Ex.: DPOC exacerbado, doença neuromuscular, sedação. Problema de "bomba".'],
+  ['VNI', 'Ventilação Não Invasiva', 'vni', 'Ventilação com pressão positiva por máscara, sem tubo na traqueia.', 'Melhor evidência: DPOC exacerbado e EAP cardiogênico. É ponte, nunca atraso para a IOT.'],
+  ['CPAP', 'Continuous Positive Airway Pressure', 'vni', 'Uma pressão positiva CONTÍNUA e igual na inspiração e na expiração (só um nível).', 'Abre alvéolos e melhora oxigenação. EAP: ~10 cmH₂O. Inicial 5–10. Não ajuda a tirar CO₂.'],
+  ['BiPAP / Bilevel', 'Bilevel Positive Airway Pressure', 'vni', 'Ventilação com DOIS níveis de pressão: IPAP (inspiração) e EPAP (expiração).', 'Ajuda a ventilar e tirar CO₂: escolha no hipercápnico (DPOC). PS = IPAP − EPAP.'],
+  ['IPAP', 'Inspiratory Positive Airway Pressure', 'vni', 'Pressão maior, dada na inspiração.', 'Aumentar IPAP → mais volume → baixa o CO₂. DPOC: ~15 subindo até 20 (máx ~30). ≤ 20–25 evita aerofagia.'],
+  ['EPAP', 'Expiratory Positive Airway Pressure', 'vni', 'Pressão menor, mantida na expiração (equivale à PEEP).', 'Aumentar EPAP → melhora oxigenação. DPOC: 4–5. Contrabalança ~70–80% da auto-PEEP.'],
+  ['PS', 'Pressão de Suporte', 'vni', 'O quanto de pressão a máquina "ajuda" acima da PEEP/EPAP em cada respiração.', 'PS = IPAP − EPAP. Desmame: PS 7–10 cmH₂O.'],
+  ['Interface', '', 'vni', 'O que liga o ventilador ao paciente na VNI: máscara nasal, oronasal, facial total, capacete.', 'Oronasal é a mais usada no agudo. Escolha certa reduz vazamento e lesão de pele.'],
+  ['Vazamento', '', 'vni', 'Ar que escapa pela máscara.', 'Prejudica trigger e ciclagem (assincronia). Ajuste máscara sem apertar demais.'],
+  ['Aerofagia', '', 'vni', 'Ar indo para o estômago durante a VNI.', 'Distensão gástrica e vômito. Evite IPAP > 20–25.'],
+  ['HACOR', 'Heart rate, Acidosis, Consciousness, Oxygenation, Respiratory rate', 'vni', 'Escore que prevê falha da VNI usando FC, pH, Glasgow, P/F e FR.', 'HACOR > 5 após 1 h de VNI = alto risco de falha: considerar IOT sem atrasar.'],
+  ['Falha da VNI', '', 'vni', 'Quando a VNI não resolve e o paciente precisa ser intubado.', 'Sinais: piora de pH/PaCO₂, FR alta, rebaixamento, HACOR > 5, sem melhora em 1–2 h. Atrasar a IOT aumenta mortalidade.'],
+  ['DPOC', 'Doença Pulmonar Obstrutiva Crônica', 'vni', 'Doença crônica (geralmente do cigarro) em que o ar entra mas tem dificuldade de sair: brônquios estreitos e pulmão hiperinsuflado.', 'Exacerbação com PaCO₂ ≥ 45 e pH ≤ 7,35 = VNI. SpO₂ alvo 88–92%. Na VM: risco de auto-PEEP, expiração longa.'],
+  ['GOLD', 'Global Initiative for Chronic Obstructive Lung Disease', 'vni', 'Classificação da gravidade da DPOC (GOLD 1 a 4).', 'GOLD 3–4 = DPOC grave/muito grave.'],
+  ['Asma', '', 'vni', 'Doença inflamatória com broncoespasmo (fechamento dos brônquios) que vai e volta.', 'Problema RESISTIVO: pico alto, platô normal. Risco de auto-PEEP.'],
+  ['SHO', 'Síndrome de Hipoventilação da Obesidade', 'vni', 'Obeso que ventila pouco e acumula CO₂ (PaCO₂ > 45 acordado).', 'Benefício de VNI/bilevel.'],
+  ['AOS', 'Apneia Obstrutiva do Sono', 'vni', 'A via aérea fecha durante o sono, causando pausas na respiração.', 'Tratamento com CPAP domiciliar.'],
+  ['COVID', 'Doença pelo coronavírus SARS-CoV-2', 'vni', 'Infecção viral que pode causar pneumonia grave e SDRA.', 'RX/TC com vidro fosco bilateral. Uso de CNAF, VNI com filtro e prona.'],
+  ['VAS', 'Vias Aéreas Superiores', 'vni', 'Nariz, boca, faringe e laringe.', 'Obstrução de VAS e trauma de face contraindicam VNI.'],
+  ['Contraindicações da VNI', '', 'vni', 'Situações em que NÃO se deve usar VNI.', 'PCR, rebaixamento grave/não protege via aérea, instabilidade hemodinâmica grave, vômito/HDA, trauma de face, PNX não drenado, cirurgia recente de esôfago/face.'],
+  ['P-SILI', 'Patient Self-Inflicted Lung Injury', 'vni', 'Lesão pulmonar causada pelo próprio esforço respiratório muito intenso do paciente.', 'Por isso, VC > 9,5 mL/kg no hipoxêmico em VNI é sinal de alerta: considerar IOT.'],
+  ['Trabalho respiratório', '', 'vni', 'O esforço que os músculos fazem para respirar.', 'Sinais de aumento: FR alta, uso de acessória, tiragem, respiração paradoxal. VNI reduz.'],
+  ['Musculatura acessória', '', 'vni', 'Músculos do pescoço e ombro (esternocleidomastoideo, escalenos) que ajudam quando o diafragma não dá conta.', 'Uso visível = desconforto respiratório importante.'],
+  ['Respiração paradoxal', '', 'vni', 'Abdome afunda quando o tórax sobe (movimento invertido).', 'Sinal de fadiga do diafragma: indica falência iminente.'],
+
+  /* ---------------- Ventilação mecânica ---------------- */
+  ['VM / VMI', 'Ventilação Mecânica (Invasiva)', 'vm', 'Máquina que ventila o paciente através de um tubo na traqueia (TOT) ou traqueostomia.', 'Objetivos: oxigenar, ventilar, reduzir trabalho respiratório e proteger o pulmão.'],
+  ['Pressão positiva', '', 'vm', 'Ventilação que EMPURRA ar para dentro do pulmão (o contrário da respiração normal, que puxa).', 'Aumenta a pressão no tórax: pode reduzir retorno venoso e cair a PA.'],
+  ['IOT', 'Intubação Orotraqueal', 'vm', 'Passar um tubo pela boca até a traqueia para ventilar mecanicamente.', 'Indicações: Glasgow < 8, falha da VNI, PCR, instabilidade grave, não proteger via aérea.'],
+  ['TOT', 'Tubo Orotraqueal', 'vm', 'O tubo colocado na IOT, que vai da boca à traqueia.', 'Tem cuff (balonete) para vedar.'],
+  ['TQT', 'Traqueostomia', 'vm', 'Abertura cirúrgica no pescoço com uma cânula direto na traqueia.', 'Usada em VM prolongada: mais conforto, menos espaço morto, facilita desmame.'],
+  ['Cuff', 'Balonete', 'vm', 'Balãozinho na ponta do TOT/TQT que veda a traqueia.', 'Pressão 20–30 cmH₂O: menos vaza/aspira; mais lesiona a traqueia.'],
+  ['Extubação', '', 'vm', 'Retirada do tubo orotraqueal.', 'Feita após TRE bem-sucedido. Pacientes de risco podem ir para VNI/CNAF preventiva.'],
+  ['Ciclo ventilatório', '', 'vm', 'As 4 fases de cada respiração na VM: disparo → inspiração → ciclagem → expiração.', 'Disparo = o que inicia; ciclagem = o que termina a inspiração.'],
+  ['Disparo (trigger)', '', 'vm', 'O que faz a máquina iniciar a inspiração: o tempo (máquina) ou o esforço do paciente (pressão ou fluxo).', 'Trigger pressão −1 a −3 cmH₂O; fluxo 2–3 L/min. Sensível demais = autodisparo.'],
+  ['Ciclagem', '', 'vm', 'O que faz a máquina parar de inspirar e deixar expirar.', 'VCV: volume/tempo. PCV: tempo. PSV: fluxo (cai a ~25% do pico; obstrutivo 40–50%).'],
+  ['VC', 'Volume Corrente', 'vm', 'Quantidade de ar que entra em cada respiração.', '6–8 mL/kg de peso PREDITO (SDRA 4–8, alvo ~6). Nunca use o peso real.'],
+  ['VE (volume minuto)', 'Ventilação minuto', 'vm', 'Quanto ar entra por minuto.', 'VE = VC × FR. É o que controla o CO₂: mais VE = menos CO₂.'],
+  ['PBW / Peso predito', 'Predicted Body Weight', 'vm', 'Peso "ideal" calculado pela altura e sexo, usado para o VC.', 'Homem: 50 + 0,91 × (altura − 152,4). Mulher: 45,5 + 0,91 × (altura − 152,4).'],
+  ['PEEP', 'Positive End-Expiratory Pressure', 'vm', 'Pressão que fica no pulmão no fim da expiração, para os alvéolos não fecharem.', 'Inicial 5–8 cmH₂O. Aumenta oxigenação (recruta). Excesso: hiperdistensão e queda de PA.'],
+  ['Auto-PEEP', 'PEEP intrínseca', 'vm', 'Ar que fica preso no pulmão porque a expiração não terminou antes da próxima inspiração.', 'Curva de fluxo não volta a zero. Comum na DPOC/asma. Corrigir: baixar FR, aumentar tempo expiratório (I:E 1:3–1:4).'],
+  ['Pico (Ppico)', 'Pressão de pico', 'vm', 'A maior pressão no ciclo: soma de resistência da via aérea + elasticidade do pulmão.', '< 35 cmH₂O. Pico alto com platô normal = problema RESISTIVO (secreção, broncoespasmo, tubo dobrado).'],
+  ['Platô (Pplatô)', 'Pressão de platô', 'vm', 'Pressão no alvéolo com o fluxo parado (pausa inspiratória). Mostra a elasticidade.', '≤ 30 cmH₂O. Medida com pausa ≥ 0,5 s. Platô alto = problema ELÁSTICO (SDRA, PNX, atelectasia).'],
+  ['Driving pressure (ΔP)', 'Pressão de distensão', 'vm', 'O quanto a pressão sobe no alvéolo a cada respiração.', 'ΔP = Platô − PEEP. Alvo < 15 cmH₂O. É o melhor preditor de lesão e mortalidade.'],
+  ['Cest', 'Complacência estática', 'vm', 'O quanto o pulmão "estica" fácil: volume ganho por cada cmH₂O de pressão.', 'Cest = VC / (Platô − PEEP). Normal 50–100 mL/cmH₂O; SDRA < 40 (pulmão duro).'],
+  ['Rva / Raw', 'Resistência das vias aéreas', 'vm', 'Dificuldade para o ar passar pelos tubos (via aérea + TOT).', 'Rva = (Pico − Platô) / fluxo (L/s). Normal ~5–10. Alta: broncoespasmo, secreção.'],
+  ['Pausa inspiratória', '', 'vm', 'Breve "segurar" no fim da inspiração, com fluxo zero, para medir o platô.', '≥ 0,5 s (0,5–2 s).'],
+  ['Fluxo', '', 'vm', 'Velocidade com que o ar entra (L/min).', 'VCV: 40–60 L/min. Baixo demais = fome de fluxo.'],
+  ['Ti', 'Tempo inspiratório', 'vm', 'Quanto tempo dura a inspiração.', '0,8–1,2 s.'],
+  ['I:E', 'Relação inspiração : expiração', 'vm', 'Proporção entre o tempo de inspirar e o de expirar.', 'Normal 1:2–1:3. Obstrutivo (DPOC/asma): 1:3–1:4, para dar tempo de esvaziar.'],
+  ['Modo ventilatório', '', 'vm', 'A "forma" como o ventilador entrega cada respiração (o que controla, dispara e cicla).', 'Principais: VCV, PCV, PSV. A/C = assistido-controlado.'],
+  ['A/C', 'Assistido-Controlado', 'vm', 'Modo em que todas as respirações são dadas pela máquina; o paciente pode disparar extras.', 'FR mínima garantida. Pode ser a volume (VCV) ou a pressão (PCV).'],
+  ['VCV', 'Ventilação Controlada a Volume', 'vm', 'Você define o VOLUME; a pressão é consequência do pulmão.', 'Garante VC. Curva de fluxo quadrada. Vigie pico e platô.'],
+  ['PCV', 'Ventilação Controlada a Pressão', 'vm', 'Você define a PRESSÃO e o tempo; o volume é consequência do pulmão.', 'Limita pressão. Curva de pressão quadrada, fluxo desacelerado. Vigie o VC.'],
+  ['PSV', 'Ventilação com Pressão de Suporte', 'vm', 'Modo espontâneo: o paciente dispara e define FR; a máquina só ajuda com uma pressão.', 'Cicla por fluxo. Usada no desmame (PS 7–10; TRE com PSV 5–8). Exige drive respiratório.'],
+  ['SIMV', 'Ventilação Mandatória Intermitente Sincronizada', 'vm', 'Mistura respirações da máquina (mandatórias) com espontâneas do paciente.', 'Pouco recomendada no desmame hoje (atrasa).'],
+  ['PRVC / VCRP', 'Volume Controlado com Pressão Regulada', 'vm', 'Modo "híbrido": a máquina ajusta a pressão para atingir o volume definido.', 'Garante VC com a menor pressão possível.'],
+  ['APRV', 'Airway Pressure Release Ventilation', 'vm', 'Modo com pressão alta mantida e liberações curtas.', 'Opção de resgate em SDRA grave.'],
+  ['Curvas do ventilador', '', 'vm', 'Gráficos de pressão, fluxo e volume ao longo do tempo na tela do ventilador.', 'Servem para ver assincronias, auto-PEEP e mecânica.'],
+  ['Assincronia', '', 'vm', 'Paciente e ventilador "brigando": o tempo do paciente não bate com o da máquina.', 'Tipos: esforço ineficaz, duplo disparo, autodisparo, fome de fluxo, ciclagem precoce/tardia. Piora conforto e desmame.'],
+  ['Fome de fluxo', '', 'vm', 'Paciente quer mais ar do que o fluxo ajustado entrega (no VCV).', 'Curva de pressão "côncava"/afundada na inspiração. Corrigir: aumentar fluxo ou mudar para PCV/PSV.'],
+  ['Esforço ineficaz', '', 'vm', 'Paciente tenta respirar mas não consegue disparar a máquina.', 'Pequenas ondas na curva sem ciclo. Causas: auto-PEEP, trigger pouco sensível.'],
+  ['Duplo disparo', '', 'vm', 'Dois ciclos seguidos com um único esforço do paciente.', 'Ti curto ou VC baixo para a demanda.'],
+  ['Autodisparo', '', 'vm', 'A máquina dispara sozinha, sem esforço do paciente.', 'Trigger sensível demais, vazamento, água no circuito.'],
+  ['SDRA', 'Síndrome do Desconforto Respiratório Agudo', 'vm', 'Pulmão inflamado e "encharcado" nos dois lados, que fica duro e não troca O₂ direito.', 'Berlim: início < 1 semana, opacidade bilateral, não explicada por IC, P/F ≤ 300 com PEEP ≥ 5. VM protetora: VC 6, platô ≤ 30, ΔP < 15. Prona se P/F < 150.'],
+  ['ARDSNet', 'ARDS Network', 'vm', 'Grupo de estudo que provou a ventilação protetora na SDRA e criou a tabela PEEP/FiO₂.', 'VC 6 mL/kg predito reduziu mortalidade.'],
+  ['Ventilação protetora', '', 'vm', 'Ventilar com volume e pressão baixos para não machucar o pulmão.', 'VC 6–8 mL/kg predito, platô ≤ 30, ΔP < 15, PEEP adequada.'],
+  ['VILI', 'Ventilator-Induced Lung Injury', 'vm', 'Lesão pulmonar causada pelo próprio ventilador.', 'Mecanismos: volutrauma (volume), barotrauma (pressão), atelectrauma (abre-fecha), biotrauma (inflamação).'],
+  ['Barotrauma', '', 'vm', 'Lesão por pressão alta no pulmão.', 'Pode causar pneumotórax.'],
+  ['Volutrauma', '', 'vm', 'Lesão por volume excessivo (hiperdistensão do alvéolo).', 'Por isso VC pelo peso predito.'],
+  ['Recrutamento alveolar', '', 'vm', 'Reabrir alvéolos colabados aumentando a pressão (PEEP).', 'Melhora shunt e oxigenação.'],
+  ['Posição prona', 'Pronação', 'vm', 'Deixar o paciente de barriga para baixo.', 'SDRA com P/F < 150, por ≥ 16 h/dia. Melhora V/Q e reduz mortalidade.'],
+  ['Hipercapnia permissiva', '', 'vm', 'Aceitar CO₂ alto para não lesar o pulmão com volume/pressão altos.', 'Tolera pH ≥ 7,20. Contraindicada na HIC.'],
+  ['BNM', 'Bloqueador Neuromuscular', 'vm', 'Remédio que paralisa os músculos (curare).', 'Usado em SDRA grave com assincronia. Aumenta risco de fraqueza.'],
+  ['ECMO', 'Oxigenação por Membrana Extracorpórea', 'vm', 'Máquina que oxigena o sangue fora do corpo (pulmão artificial).', 'Resgate na SDRA refratária. ECMO VV = veno-venosa (só pulmão).'],
+  ['Desmame', '', 'vm', 'Processo de retirar o paciente da ventilação mecânica.', 'Começa assim que o paciente estabiliza. Critérios: causa controlada, PEEP ≤ 8, FiO₂ ≤ 0,4, P/F > 150–200, estável, desperto.'],
+  ['TRE', 'Teste de Respiração Espontânea', 'vm', 'Teste em que o paciente respira com pouco ou nenhum suporte para ver se aguenta sem a máquina.', '30–120 min em PSV 5–8 ou tubo T. Passou = extubar.'],
+  ['Tubo T', '', 'vm', 'Peça em "T" que liga o TOT a uma fonte de O₂, sem pressão da máquina.', 'Uma das formas de fazer o TRE.'],
+  ['IRRS / Índice de Tobin', 'Índice de Respiração Rápida e Superficial', 'vm', 'FR dividida pelo VC em litros (FR/VC).', '< 105 = boa chance de sucesso no desmame.'],
+  ['VIDD', 'Ventilator-Induced Diaphragmatic Dysfunction', 'vm', 'Fraqueza do diafragma causada pelo uso da VM (ele "atrofia" sem trabalhar).', 'Por isso modos espontâneos e desmame precoce.'],
+  ['CRF', 'Capacidade Residual Funcional', 'vm', 'Volume de ar que fica no pulmão depois de uma expiração normal.', 'PEEP/CPAP aumentam a CRF (abrem alvéolos).'],
+  ['Complacência', '', 'vm', 'Facilidade do pulmão em se expandir.', 'Baixa = pulmão duro (SDRA, fibrose, edema).'],
+  ['Elastância', '', 'vm', 'O contrário da complacência: o quanto o pulmão resiste a encher.', 'Problema elástico = platô alto.'],
+  ['Ambu', 'Bolsa-válvula-máscara', 'vm', 'Bolsa de ventilação manual.', 'Usada na emergência e em transportes.']
+].forEach(([t, ext, m, d, p]) => DICT.push({ t, ext, m, d, p }));
+
 /* ================= helpers ================= */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -1772,6 +2020,7 @@ const ICON = {
   vm: '<path d="M12 4v7"/><path d="M12 11c-2 0-6 2-6 7 0 1.5 1 2 2 2 2 0 3-2 3-4"/><path d="M12 11c2 0 6 2 6 7 0 1.5-1 2-2 2-2 0-3-2-3-4"/>',
   flash: '<rect x="3" y="6" width="14" height="12" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v10"/>',
   sim: '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>',
+  dict: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h5"/>',
   board: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>'
 };
 const ico = (k, s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k] || ''}</svg>`;
@@ -1780,6 +2029,7 @@ const PAGES = [
   { id: 'home', name: 'Início', short: 'Início', color: '#f472b6', icon: 'home' },
   ...MODULES.map(m => ({ id: m.id, name: m.name, short: m.short, color: m.color, icon: m.id })),
   { id: 'flash', name: 'Flashcards', short: 'Cards', color: '#22d3ee', icon: 'flash' },
+  { id: 'dict', name: 'Dicionário', short: 'Dicion.', color: '#a3e635', icon: 'dict' },
   { id: 'sim', name: 'Simulado', short: 'Simulado', color: '#f97316', icon: 'sim' }
 ];
 const PAGE = Object.fromEntries(PAGES.map(p => [p.id, p]));
@@ -1842,6 +2092,7 @@ function renderHome() {
       <button class="hbtn" onclick="document.getElementById('lousaSec').scrollIntoView({behavior:'smooth'})">Lousa de números</button>
       <button class="hbtn ghost" onclick="go('sim')">Fazer simulado</button>
       <button class="hbtn ghost" onclick="go('flash')">Flashcards</button>
+      <button class="hbtn ghost" onclick="go('dict')">Dicionário</button>
     </div>
   </div>
   <h2 class="sec">Módulos</h2>
@@ -2481,9 +2732,58 @@ function simEnd() {
   window.scrollTo({ top: 0 });
 }
 
+/* ================= DICIONÁRIO ================= */
+const dictState = { q: '', mod: 'all', memo: false };
+DICT.sort((a, b) => a.t.localeCompare(b.t, 'pt', { sensitivity: 'base' }));
+DICT.forEach((d, i) => { d.i = i; d.L = (norm(d.t).match(/[a-z]/) || ['#'])[0].toUpperCase(); d.n = norm(`${d.t} ${d.ext} ${d.d} ${d.p}`); });
+function renderDictPage() {
+  const pg = h('section', { class: 'page', id: 'pg-dict' });
+  pg.innerHTML = `<div class="hero" style="--mc:#65a30d"><div class="kicker">Siglas e termos</div><h1>Dicionário da UTI</h1><p>Cada termo em linguagem simples: o que é e o que importa na prova. Use o "Modo decorar" para esconder as definições e testar se você lembra.</p><div class="hstats"><div class="hstat"><b>${DICT.length}</b>termos</div></div></div>
+  <div class="dict-tools">
+    <input id="dq" class="dq" type="search" placeholder="Buscar termo ou sigla (ex.: hipoxemia, SDRA, PEEP)" autocomplete="off">
+    <div class="fc-bar" id="dChips"></div>
+    <div class="az" id="dAZ"></div>
+  </div>
+  <div id="dList"></div>`;
+  $('#main').appendChild(pg);
+  const chips = [['all', 'Todos', '#65a30d'], ...MODULES.map(m => [m.id, m.short, m.color])];
+  $('#dChips', pg).innerHTML = chips.map(c => `<button class="chip" data-m="${c[0]}" style="--c:${c[2]}">${c[1]}</button>`).join('') + '<button class="chip" id="dMemo" style="--c:#65a30d">Modo decorar</button>';
+  $$('#dChips [data-m]', pg).forEach(c => c.onclick = () => { dictState.mod = c.dataset.m; dictRender(); });
+  $('#dMemo', pg).onclick = () => { dictState.memo = !dictState.memo; dictRender(); };
+  $('#dq', pg).addEventListener('input', e => { dictState.q = e.target.value; dictRender(); });
+  $('#dAZ', pg).addEventListener('click', e => {
+    const b = e.target.closest('button[data-l]'); if (!b || b.disabled) return;
+    const el = $('#dl-' + b.dataset.l); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - dictOffset(), behavior: 'smooth' });
+  });
+  $('#dList', pg).addEventListener('click', e => { const c = e.target.closest('.dcard'); if (c && dictState.memo) c.classList.toggle('rev'); });
+  dictRender();
+}
+function dictRender() {
+  const pg = $('#pg-dict'); if (!pg) return;
+  const terms = norm(dictState.q).split(' ').filter(Boolean);
+  const list = DICT.filter(d => (dictState.mod === 'all' || d.m === dictState.mod) && terms.every(t => d.n.includes(t)));
+  $$('#dChips [data-m]', pg).forEach(c => c.classList.toggle('on', c.dataset.m === dictState.mod));
+  $('#dMemo', pg).classList.toggle('on', dictState.memo);
+  const letters = [...new Set(list.map(d => d.L))];
+  $('#dAZ', pg).innerHTML = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].map(l => `<button data-l="${l}" ${letters.includes(l) ? '' : 'disabled'}>${l}</button>`).join('');
+  const box = $('#dList', pg);
+  box.classList.toggle('memo', dictState.memo);
+  if (!list.length) { box.innerHTML = '<div class="sr-empty">Nenhum termo encontrado. Tente outra palavra ou mude o filtro.</div>'; return; }
+  box.innerHTML = letters.map(l => `<h3 class="dl-letter" id="dl-${l}">${l}</h3><div class="dgrid">${list.filter(d => d.L === l).map(d => { const m = MOD[d.m]; return `<div class="dcard" id="d-${d.i}" style="--c:${m.color}"><div class="dhead"><b>${d.t}</b><span class="dtag">${m.short}</span></div>${d.ext ? `<div class="dext">${d.ext}</div>` : ''}<div class="dbody"><p class="dd">${d.d}</p>${d.p ? `<p class="dp"><span>Na prova</span>${d.p}</p>` : ''}</div><div class="dhint">toque para ver</div></div>`; }).join('')}</div>`).join('');
+}
+function openDict(i) {
+  dictState.q = ''; dictState.mod = 'all'; dictState.memo = false;
+  go('dict'); $('#dq').value = ''; dictRender();
+  const c = $('#d-' + i); if (!c) return;
+  c.classList.remove('flash-hl'); void c.offsetWidth; c.classList.add('flash-hl');
+  setTimeout(() => window.scrollTo({ top: c.getBoundingClientRect().top + window.scrollY - dictOffset(), behavior: 'smooth' }), 60);
+}
+function dictOffset() { const t = $('.dict-tools'); return parseFloat(getComputedStyle(t).top) + t.offsetHeight + 10; }
+
 /* ================= SEARCH ================= */
 let SIDX = [];
 function buildIndex() {
+  DICT.forEach(d => SIDX.push({ k: 'Dicionário', m: d.m, t: d.t + (d.ext ? ' · ' + d.ext : ''), s: d.d, n: d.n, go: () => openDict(d.i) }));
   MODULES.forEach(m => {
     (TOPICS[m.id] || []).forEach((t, i) => SIDX.push({ k: 'Tópico', m: m.id, t: t.t, s: strip(t.b), n: norm(t.t + ' ' + t.s + ' ' + t.b), go: () => openTopic(m.id, i) }));
     (COMPARE[m.id] || []).forEach(c => SIDX.push({ k: 'Comparação', m: m.id, t: c.t, s: strip(c.rows.map(r => r.join(' · ')).join(' | ')), n: norm(c.t + ' ' + c.head.join(' ') + ' ' + c.rows.flat().join(' ')), go: () => go(m.id, { sub: 'comp' }) }));
@@ -2502,7 +2802,7 @@ function doSearch(qs) {
   const box = $('#qres');
   const q = norm(qs); if (q.length < 2) { box.classList.remove('show'); return; }
   const terms = q.split(' ').filter(Boolean);
-  const res = SIDX.map(x => { let sc = 0; for (const t of terms) { if (!x.n.includes(t)) return null; sc += norm(x.t).includes(t) ? 5 : 1; } if (x.k === 'Tópico') sc += 2; return { x, sc }; }).filter(Boolean).sort((a, b) => b.sc - a.sc).slice(0, 14);
+  const res = SIDX.map(x => { let sc = 0; for (const t of terms) { if (!x.n.includes(t)) return null; sc += norm(x.t).includes(t) ? 5 : 1; } if (x.k === 'Tópico') sc += 2; if (x.k === 'Dicionário') sc += 3; return { x, sc }; }).filter(Boolean).sort((a, b) => b.sc - a.sc).slice(0, 14);
   const hl = s => { let out = s; terms.forEach(t => { const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); out = out.replace(re, '<mark>$1</mark>'); }); return out; };
   const snip = s => { const i = norm(s).indexOf(terms[0]); const a = Math.max(0, i - 50); return (a ? '…' : '') + s.slice(a, a + 140) + '…'; };
   box.innerHTML = res.length ? res.map((r, i) => `<div class="sr-item" data-i="${i}"><div class="sr-k" style="color:${MOD[r.x.m].color}">${r.x.k} · ${MOD[r.x.m].short}</div><div class="sr-t">${hl(r.x.t)}</div><div class="sr-s">${hl(snip(r.x.s))}</div></div>`).join('') : '<div class="sr-empty">Nada encontrado. Tente outro termo (ex.: "auto-PEEP", "Venturi", "noradrenalina").</div>';
@@ -2520,6 +2820,7 @@ buildNav();
 renderHome();
 MODULES.forEach(renderModule);
 renderFlashPage();
+renderDictPage();
 renderSimPage();
 buildIndex();
 go((location.hash || '#home').slice(1), { keepScroll: true });
