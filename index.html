@@ -68,8 +68,8 @@ mark{background:color-mix(in srgb,var(--warn) 40%,transparent);color:inherit;bor
   .nav{display:none}
   .brand small{display:none}
   .bottomnav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px;padding-bottom:max(6px,env(safe-area-inset-bottom));justify-content:space-around}
-  .bn{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;font-size:.6rem;font-weight:700;color:var(--dim);padding:4px 0;border-radius:10px}
-  .bn .bi{width:28px;height:24px;border-radius:8px;display:grid;place-items:center}
+  .bn{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;font-size:.55rem;font-weight:700;letter-spacing:-.2px;color:var(--dim);padding:4px 0;border-radius:10px}
+  .bn .bi{width:26px;height:24px;border-radius:8px;display:grid;place-items:center}
   .bn.active{color:var(--c)}
   .bn.active .bi{background:color-mix(in srgb,var(--c) 18%,transparent)}
 }
@@ -284,6 +284,28 @@ table.t tr:hover td:first-child{background:color-mix(in srgb,var(--mc) 8%,var(--
 .fc-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 12px;font-size:.78rem;font-weight:700;color:var(--muted)}
 .chip.on{background:var(--c,var(--mc));border-color:var(--c,var(--mc));color:#fff}
+/* ---------- resumão ---------- */
+.rjump{margin:16px 0 4px}
+.rmod{margin-top:26px;scroll-margin-top:120px}
+.rmod-h{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--c);padding-bottom:8px}
+.rmod-h h2{font-size:1.25rem;margin:0;letter-spacing:-.2px}
+.rintro{font-size:.98rem;line-height:1.55;margin:12px 0 0}
+.rkey{margin:12px 0 0;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--c) 14%,var(--card));border:1px solid color-mix(in srgb,var(--c) 45%,transparent);font-weight:650;line-height:1.5}
+.rkey span{display:block;font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--c);margin-bottom:3px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:14px}
+@media (max-width:420px){.rgrid{grid-template-columns:minmax(0,1fr)}}
+.rblock,.rpat{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:14px;padding:14px 16px;min-width:0;overflow-wrap:anywhere}
+.rpat{border-top:1px solid var(--line);border-left:4px solid var(--c)}
+.rblock h4{margin:0 0 8px;font-size:1rem;color:var(--c)}
+.rblock ul,.rpat ul{margin:0;padding-left:18px}
+.rblock li,.rpat li{font-size:.92rem;line-height:1.5;margin:5px 0}
+.rwhat{margin:8px 0;font-size:.92rem;color:var(--muted);line-height:1.5}
+.rladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:14px;counter-reset:s}
+.rstep{position:relative;display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.rstep>b{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:#111;font-weight:900}
+.rstep h4{margin:2px 0 4px;font-size:.95rem}
+.rstep p{margin:0;font-size:.84rem;line-height:1.45;color:var(--muted)}
+.rmod.flash-hl{animation:hl 1.6s ease}
 /* ---------- dicionário ---------- */
 .dict-tools{position:sticky;top:104px;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:12px 0 8px;margin-top:8px}
 @media (max-width:760px){.dict-tools{top:62px}}
@@ -411,8 +433,10 @@ const MODULES = [
 
 const TOPICS = {}, COMPARE = {}, TRAIN = {};
 const DRILLS = [], CASES = [], FLASH = [], QUEST = [], DICT = [];
+const RESUMO = {};
 
 const PLAN = [
+  { min: '15 min', t: 'Resumão: o básico de todos os módulos e os pacientes-chave', go: ['res'] },
   { min: '5 min', t: 'Lousa de números (modo esconder) para ver o que você já sabe', go: ['home'] },
   { min: '8 min', t: 'Avaliação: 4 choques, drogas e "mobilizo ou não?"', go: ['aval', 'treino'] },
   { min: '8 min', t: 'Exames: 5 casos de gasometria guiada + teste de RX', go: ['exames', 'treino'] },
@@ -1992,6 +2016,193 @@ QUEST.push(
   ['Ambu', 'Bolsa-válvula-máscara', 'vm', 'Bolsa de ventilação manual.', 'Usada na emergência e em transportes.']
 ].forEach(([t, ext, m, d, p]) => DICT.push({ t, ext, m, d, p }));
 
+RESUMO.mapa = [
+  { t: 'Avaliar', d: 'Está grave? Olhe o paciente, o monitor, o que sustenta ele e se está piorando.' },
+  { t: 'O₂ simples', d: 'Falta O₂ no sangue? Cateter nasal, máscara ou Venturi, mirando a meta de SpO₂.' },
+  { t: 'CNAF ou VNI', d: 'O₂ simples não deu conta ou está cansando? Sobe para alto fluxo ou máscara com pressão.' },
+  { t: 'Intubar (IOT)', d: 'VNI falhou, não protege a via aérea (Glasgow < 8), parou ou está instável demais.' },
+  { t: 'VM invasiva', d: 'O ventilador respira pelo paciente através do tubo, protegendo o pulmão.' },
+  { t: 'Desmame', d: 'Causa melhorou? Teste de respiração espontânea (TRE). Passou, extuba.' }
+];
+
+RESUMO.mods = [
+  { id: 'aval', t: 'Avaliação do doente crítico',
+    intro: 'Paciente crítico é aquele com um órgão falhando ou prestes a falhar. Não precisa estar intubado para ser crítico.',
+    key: 'Gravidade é trajetória: o que importa é se está melhorando ou piorando, não só o número de agora.',
+    blocks: [
+      { h: 'Antes de tocar: 5 passos', items: [
+        '<b>Paciente:</b> está confortável, consciente, fazendo esforço para respirar?',
+        '<b>Monitor:</b> PA/PAM, FC, FR, SpO₂.',
+        '<b>Suporte:</b> está em O₂, VNI, VM? Usa droga para pressão? Sedação?',
+        '<b>Dispositivos:</b> tubo, cateteres, drenos, sondas (cuidado ao mexer).',
+        '<b>Tendência:</b> está melhorando ou piorando nas últimas horas?'
+      ] },
+      { h: 'Choque = o sangue não está levando O₂ aos tecidos', items: [
+        '<b>Hipovolêmico:</b> o tanque esvaziou (sangramento, desidratação). Tratar: volume.',
+        '<b>Cardiogênico:</b> a bomba falhou (infarto, IC grave). Tratar: dobutamina.',
+        '<b>Distributivo:</b> os vasos abriram demais (sepse). Tratar: noradrenalina.',
+        '<b>Obstrutivo:</b> algo entupiu o caminho (TEP, pneumotórax hipertensivo). Tratar: desobstruir.',
+        'Sinais de choque: pressão baixa, FC alta, pele fria, pouca urina, confusão, lactato alto.',
+        'Meta: <b>PAM > 65</b>.'
+      ] },
+      { h: 'Drogas', items: [
+        '<b>Noradrenalina:</b> fecha os vasos e sobe a pressão. 1ª escolha na sepse.',
+        '<b>Dobutamina:</b> dá força ao coração.',
+        'Droga em dose alta ou subindo = cuidado para mobilizar.'
+      ] },
+      { h: 'Escalas: para que serve cada uma', items: [
+        '<b>Glasgow:</b> nível de consciência (3 a 15). <b>Abaixo de 8, intubar.</b>',
+        '<b>RASS:</b> sedação/agitação (−5 a +4). Ideal perto de 0.',
+        '<b>CAM-ICU:</b> detecta delirium (confusão aguda).',
+        '<b>MRC:</b> força muscular (0 a 60). Abaixo de 48 = fraqueza adquirida na UTI.',
+        '<b>IMS:</b> o quanto o paciente se mexe (0 deitado a 10 andando sozinho).'
+      ] },
+      { h: 'Posso mobilizar?', items: [
+        'Sim, se está estável: pressão e FC ok, oxigenando bem, sem droga subindo, acordado o suficiente.',
+        'Parar se ao mexer a pressão cai, a FC dispara, a SpO₂ despenca ou ele passa mal.',
+        'Mobilizar cedo reduz fraqueza, delirium e tempo de ventilador.'
+      ] }
+    ] },
+  { id: 'exames', t: 'Exames complementares',
+    intro: 'Gasometria mostra como estão o O₂, o CO₂ e o ácido do sangue. O RX mostra o que está acontecendo no pulmão.',
+    key: 'CO₂ é o lado do PULMÃO; bicarbonato (HCO₃⁻) é o lado do METABOLISMO. Quem combina com o pH é o culpado.',
+    blocks: [
+      { h: 'Gasometria em 4 passos', items: [
+        '<b>1. pH:</b> baixo = acidose; alto = alcalose.',
+        '<b>2. PaCO₂:</b> o lado respiratório. CO₂ alto deixa ácido.',
+        '<b>3. HCO₃⁻:</b> o lado metabólico. Bicarbonato baixo deixa ácido.',
+        '<b>4. Quem explica o pH?</b> Esse é o distúrbio principal. O outro, se mexeu no sentido oposto, está compensando.',
+        'Depois, olhe a <b>PaO₂</b>: está faltando O₂ (hipoxemia)?'
+      ] },
+      { h: 'Os 4 distúrbios', items: [
+        '<b>Acidose respiratória:</b> CO₂ alto, respira pouco (DPOC, sedação, cansaço).',
+        '<b>Alcalose respiratória:</b> CO₂ baixo, respira demais (ansiedade, dor, ventilador alto).',
+        '<b>Acidose metabólica:</b> bicarbonato baixo (choque com lactato, rim, diabetes).',
+        '<b>Alcalose metabólica:</b> bicarbonato alto (vômitos, diurético).'
+      ] },
+      { h: 'RX de tórax', items: [
+        '<b>Branco</b> = denso (líquido, secreção, osso). <b>Preto</b> = ar.',
+        '<b>Pneumonia:</b> mancha branca num lobo (consolidação).',
+        '<b>Atelectasia:</b> área branca que <b>puxa</b> as estruturas para o lado dela (pulmão murchou).',
+        '<b>Derrame pleural:</b> base branca, ângulo apagado; se grande, <b>empurra</b> para o outro lado.',
+        '<b>Pneumotórax:</b> área preta sem vasos (ar fora do pulmão).',
+        '<b>EAP:</b> branco em volta do hilo, "asa de borboleta", coração grande.',
+        '<b>SDRA:</b> branco espalhado nos dois pulmões.',
+        '<b>DPOC:</b> pulmão grande e preto demais (hiperinsuflado), diafragma reto.'
+      ] }
+    ] },
+  { id: 'o2', t: 'Oxigenioterapia',
+    intro: 'Dar O₂ extra para quem não está conseguindo oxigenar o sangue.',
+    key: 'O₂ é remédio: tem dose, alvo e efeito colateral. Prescreve-se META de SpO₂, não litros.',
+    blocks: [
+      { h: 'O básico', items: [
+        '<b>Hipoxemia:</b> pouco O₂ no SANGUE (SpO₂ < 90%). <b>Hipóxia:</b> pouco O₂ no TECIDO.',
+        '<b>Meta de SpO₂:</b> 92–96% na maioria. <b>DPOC/retentor de CO₂: 88–92%.</b>',
+        'SpO₂ acima de 96% = está dando O₂ demais, reduza.',
+        '<b>O₂ demais faz mal:</b> lesa o pulmão e, no DPOC, pode subir o CO₂.'
+      ] },
+      { h: 'Dispositivos', items: [
+        '<b>Baixo fluxo</b> (o paciente completa com ar da sala, a FiO₂ varia): cateter nasal, máscara simples.',
+        '<b>Alto fluxo</b> (FiO₂ certinha): Venturi, CNAF.',
+        '<b>Cateter nasal:</b> o mais simples, para pouca necessidade.',
+        '<b>Máscara simples:</b> um pouco mais de O₂.',
+        '<b>Venturi:</b> FiO₂ exata pela cor da válvula. Ótima no <b>DPOC</b>.',
+        '<b>Máscara com reservatório:</b> muito O₂, ponte na emergência.',
+        '<b>CNAF:</b> muito fluxo, aquecido e úmido, confortável. Dá um pouco de PEEP e "lava" o CO₂ do nariz.'
+      ] },
+      { h: 'Quando o O₂ não basta', items: [
+        '<b>Shunt:</b> o sangue passa por alvéolos fechados ou cheios (pneumonia, SDRA, atelectasia). O₂ sozinho não resolve, é preciso <b>abrir</b> com pressão (PEEP, CPAP, prona).',
+        'Se precisa cada vez mais O₂ e continua cansado: subir de degrau (CNAF, VNI, IOT).'
+      ] }
+    ] },
+  { id: 'vni', t: 'VNI e insuficiência respiratória',
+    intro: 'VNI é ventilar com pressão positiva por uma MÁSCARA, sem tubo. É ventilação mecânica, só muda a interface.',
+    key: 'VNI é ponte, nunca atraso: se não melhorou em 1–2 h, intuba.',
+    blocks: [
+      { h: 'Insuficiência respiratória aguda (IRpA)', items: [
+        '<b>Tipo 1, hipoxêmica:</b> falta O₂ (PaO₂ < 60). Problema de troca: pneumonia, SDRA, EAP.',
+        '<b>Tipo 2, hipercápnica:</b> sobra CO₂ (PaCO₂ > 45 e pH < 7,35). Problema de "bomba": DPOC, neuromuscular, sedação.'
+      ] },
+      { h: 'CPAP x BiPAP', items: [
+        '<b>CPAP:</b> UMA pressão só, contínua. Abre alvéolos e melhora O₂. Escolha no <b>EAP</b>.',
+        '<b>BiPAP:</b> DUAS pressões (IPAP na inspiração, EPAP na expiração). Ajuda a ventilar e tirar CO₂. Escolha no <b>DPOC</b>.',
+        'Subir <b>IPAP</b> = tira mais CO₂. Subir <b>EPAP</b> = melhora o O₂.'
+      ] },
+      { h: 'Quando usar', items: [
+        'Melhor evidência: <b>DPOC exacerbado com acidose respiratória</b> e <b>EAP cardiogênico</b>.',
+        'Também: imunossuprimido, pós-extubação de risco, pós-operatório.',
+        'Hipoxêmico "puro" (pneumonia, SDRA leve): pode tentar, mas com muita vigilância.'
+      ] },
+      { h: 'Quando NÃO usar', items: [
+        'Parada cardíaca, rebaixado que não protege a via aérea, instabilidade grave.',
+        'Vômito ou sangramento digestivo, trauma de face, pneumotórax não drenado.',
+        'Paciente que não colabora ou não tolera a máscara.'
+      ] },
+      { h: 'Está falhando?', items: [
+        'FR continua alta, pH e CO₂ não melhoram, fica sonolento ou agitado, SpO₂ não sobe.',
+        '<b>HACOR</b> (FC, pH, Glasgow, P/F, FR) <b>acima de 5 após 1 h</b> = alto risco de falha.',
+        'Falhou: <b>intubar sem demora</b>. Atrasar a intubação aumenta a mortalidade.'
+      ] }
+    ] },
+  { id: 'vm', t: 'Ventilação mecânica invasiva',
+    intro: 'O ventilador respira pelo paciente por um tubo na traqueia (intubação) ou traqueostomia.',
+    key: 'Ventilar protegendo o pulmão: volume baixo (6 mL/kg do peso PREDITO), platô ≤ 30 e driving pressure < 15.',
+    blocks: [
+      { h: 'Quando intubar', items: [
+        'Glasgow < 8, falha da VNI, parada, choque grave, não consegue proteger a via aérea.'
+      ] },
+      { h: 'Os botões principais', items: [
+        '<b>VC (volume corrente):</b> quanto ar entra por respiração. Calcula pelo peso predito (altura e sexo).',
+        '<b>FR:</b> quantas respirações por minuto. Mexe no CO₂.',
+        '<b>PEEP:</b> pressão que segura os alvéolos abertos no fim da expiração. Mexe no O₂.',
+        '<b>FiO₂:</b> % de O₂. A menor possível.',
+        '<b>CO₂ alto?</b> Aumente a ventilação (FR ou VC). <b>O₂ baixo?</b> Aumente PEEP ou FiO₂.'
+      ] },
+      { h: 'Modos', items: [
+        '<b>VCV:</b> você escolhe o VOLUME; a pressão depende do pulmão.',
+        '<b>PCV:</b> você escolhe a PRESSÃO; o volume depende do pulmão.',
+        '<b>PSV:</b> o paciente respira sozinho e a máquina só ajuda. Usado no <b>desmame</b>.'
+      ] },
+      { h: 'Pressões: pico x platô', items: [
+        '<b>Pico</b> = tubo/via aérea + pulmão. <b>Platô</b> = só o pulmão (alvéolo).',
+        '<b>Pico alto com platô normal:</b> problema de RESISTÊNCIA (secreção, broncoespasmo, tubo dobrado).',
+        '<b>Pico e platô altos:</b> problema ELÁSTICO, pulmão duro (SDRA, pneumotórax, atelectasia).',
+        '<b>Driving pressure</b> = platô − PEEP. Quanto menor, menos lesão.'
+      ] },
+      { h: 'Problemas comuns', items: [
+        '<b>Auto-PEEP:</b> o ar não sai todo antes da próxima respiração (DPOC, asma). Curva de fluxo não volta a zero. Corrige baixando a FR e dando mais tempo para expirar.',
+        '<b>Assincronia:</b> paciente e máquina "brigando" (ex.: fome de fluxo, esforço que não dispara). Ajustar o ventilador ao paciente.',
+        '<b>Pneumonia associada à VM:</b> prevenir com cabeceira elevada, cuff ok, higiene oral e desmame rápido.'
+      ] },
+      { h: 'Desmame', items: [
+        'Começa assim que a causa melhora e o paciente fica estável e acordado.',
+        '<b>TRE:</b> deixa respirar com pouco suporte (PSV baixa ou tubo T) por 30 min a 2 h.',
+        'Passou no TRE: <b>extuba</b>. Pacientes de risco saem para VNI ou CNAF.'
+      ] }
+    ] }
+];
+
+RESUMO.pacientes = [
+  { t: 'DPOC exacerbado', m: 'vni', what: 'O ar entra mas não sai direito; acumula CO₂ (acidose respiratória).',
+    todo: ['SpO₂ alvo <b>88–92%</b>, de preferência com Venturi.', '<b>BiPAP</b> se pH baixo e CO₂ alto: 1ª escolha.', 'Na VM: FR baixa e <b>expiração longa</b> para evitar auto-PEEP.'] },
+  { t: 'SDRA', m: 'vm', what: 'Os dois pulmões inflamados e encharcados, duros, não oxigenam (shunt).',
+    todo: ['VM protetora: <b>VC 6 mL/kg predito</b>, platô ≤ 30, driving < 15.', 'PEEP para abrir alvéolos.', '<b>Prona</b> nos graves (P/F < 150).'] },
+  { t: 'EAP cardiogênico', m: 'vni', what: 'Coração fraco, o líquido volta e alaga o pulmão.',
+    todo: ['<b>CPAP/VNI</b> ajuda muito: empurra o líquido e alivia o coração.', 'Tratar a causa cardíaca junto.'] },
+  { t: 'Pneumonia', m: 'o2', what: 'Alvéolos cheios de secreção: sangue passa sem oxigenar (shunt).',
+    todo: ['O₂ com meta de SpO₂.', 'Se só O₂ não resolve: CNAF ou VNI com vigilância; piorou, intuba.'] },
+  { t: 'Asma grave', m: 'vm', what: 'Brônquios fechados (broncoespasmo): problema de RESISTÊNCIA.',
+    todo: ['Pico alto e platô normal na VM.', 'Risco de <b>auto-PEEP</b>: FR baixa e tempo expiratório longo.'] },
+  { t: 'Hipoxêmico "de novo"', m: 'vni', what: 'Falta O₂ sem doença pulmonar crônica antes (pneumonia, SDRA inicial).',
+    todo: ['CNAF é boa opção.', 'VNI com cautela: volume muito alto ou esforço enorme = intubar.', '<b>Não atrasar a intubação.</b>'] },
+  { t: 'Rebaixado (Glasgow < 8)', m: 'aval', what: 'Não consegue proteger a própria via aérea (risco de aspirar).',
+    todo: ['<b>Intubar.</b>', 'VNI é contraindicada.'] },
+  { t: 'Choque séptico', m: 'aval', what: 'Infecção que abriu os vasos: pressão baixa e tecidos sem O₂.',
+    todo: ['Volume + <b>noradrenalina</b>, meta <b>PAM > 65</b>.', 'Lactato para acompanhar.', 'Droga subindo = segurar a mobilização.'] },
+  { t: 'TCE / hipertensão intracraniana', m: 'vm', what: 'Pressão alta dentro do crânio.',
+    todo: ['Manter <b>CO₂ normal</b> (35–45): CO₂ alto incha o cérebro.', 'Sem hipercapnia permissiva.', 'Evitar hipoxemia.'] }
+];
+
 /* ================= helpers ================= */
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -2021,12 +2232,14 @@ const ICON = {
   flash: '<rect x="3" y="6" width="14" height="12" rx="2"/><path d="M7 3h12a2 2 0 0 1 2 2v10"/>',
   sim: '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>',
   dict: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><path d="M9 7h7M9 11h5"/>',
+  res: '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
   board: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>'
 };
 const ico = (k, s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[k] || ''}</svg>`;
 
 const PAGES = [
   { id: 'home', name: 'Início', short: 'Início', color: '#f472b6', icon: 'home' },
+  { id: 'res', name: 'Resumão', short: 'Resumão', color: '#eab308', icon: 'res' },
   ...MODULES.map(m => ({ id: m.id, name: m.name, short: m.short, color: m.color, icon: m.id })),
   { id: 'flash', name: 'Flashcards', short: 'Cards', color: '#22d3ee', icon: 'flash' },
   { id: 'dict', name: 'Dicionário', short: 'Dicion.', color: '#a3e635', icon: 'dict' },
@@ -2089,7 +2302,8 @@ function renderHome() {
       <div class="hstat"><b>${CASES.length}</b>casos</div>
     </div>
     <div class="hbtns">
-      <button class="hbtn" onclick="document.getElementById('lousaSec').scrollIntoView({behavior:'smooth'})">Lousa de números</button>
+      <button class="hbtn" onclick="go('res')">Resumão (comece aqui)</button>
+      <button class="hbtn ghost" onclick="document.getElementById('lousaSec').scrollIntoView({behavior:'smooth'})">Lousa de números</button>
       <button class="hbtn ghost" onclick="go('sim')">Fazer simulado</button>
       <button class="hbtn ghost" onclick="go('flash')">Flashcards</button>
       <button class="hbtn ghost" onclick="go('dict')">Dicionário</button>
@@ -2732,6 +2946,36 @@ function simEnd() {
   window.scrollTo({ top: 0 });
 }
 
+/* ================= RESUMÃO ================= */
+function renderResumoPage() {
+  const pg = h('section', { class: 'page', id: 'pg-res' });
+  const jumps = [['rs-mapa', 'Mapa geral', '#eab308'], ...RESUMO.mods.map(m => ['rs-' + m.id, MOD[m.id].short, MOD[m.id].color]), ['rs-pac', 'Pacientes-chave', '#eab308']];
+  const mods = RESUMO.mods.map(m => { const c = MOD[m.id].color; return `<section class="rmod" id="rs-${m.id}" style="--c:${c}">
+    <div class="rmod-h"><h2>${m.t}</h2><button class="btn sm sec" onclick="go('${m.id}')">Módulo completo</button></div>
+    <p class="rintro">${m.intro}</p>
+    <div class="rkey"><span>Lembre disso</span>${m.key}</div>
+    <div class="rgrid">${m.blocks.map(b => `<div class="rblock"><h4>${b.h}</h4><ul>${b.items.map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>
+  </section>`; }).join('');
+  pg.innerHTML = `<div class="hero" style="--mc:#ca8a04"><div class="kicker">Leia primeiro</div><h1>Resumão de tudo</h1><p>O básico de cada módulo, sem excesso de números: o que é, quando usar, quando não usar e a ideia que você precisa lembrar. No fim, os pacientes que mais caem e o que fazer com cada um.</p></div>
+  <div class="fc-bar rjump" id="rJump">${jumps.map(j => `<button class="chip" data-to="${j[0]}" style="--c:${j[2]}">${j[1]}</button>`).join('')}</div>
+  <section class="rmod" id="rs-mapa" style="--c:#eab308"><div class="rmod-h"><h2>Mapa geral: o paciente que não respira bem</h2></div>
+    <p class="rintro">Do mais leve ao mais invasivo. Só sobe de degrau quando o anterior não está dando conta.</p>
+    <div class="rladder">${RESUMO.mapa.map((s, i) => `<div class="rstep"><b>${i + 1}</b><div><h4>${s.t}</h4><p>${s.d}</p></div></div>`).join('')}</div>
+  </section>
+  ${mods}
+  <section class="rmod" id="rs-pac" style="--c:#eab308"><div class="rmod-h"><h2>Pacientes-chave: se aparecer X, pense Y</h2></div>
+    <div class="rgrid">${RESUMO.pacientes.map(p => `<div class="rpat" style="--c:${MOD[p.m].color}"><div class="dhead"><b>${p.t}</b><span class="dtag">${MOD[p.m].short}</span></div><p class="rwhat">${p.what}</p><ul>${p.todo.map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>
+  </section>`;
+  $('#main').appendChild(pg);
+  $('#rJump', pg).addEventListener('click', e => { const b = e.target.closest('[data-to]'); if (b) resJump(b.dataset.to); });
+}
+function resJump(id) {
+  go('res');
+  const el = $('#' + id); if (!el) return;
+  el.classList.remove('flash-hl'); void el.offsetWidth; el.classList.add('flash-hl');
+  setTimeout(() => window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (innerWidth <= 760 ? 72 : 116), behavior: 'smooth' }), 40);
+}
+
 /* ================= DICIONÁRIO ================= */
 const dictState = { q: '', mod: 'all', memo: false };
 DICT.sort((a, b) => a.t.localeCompare(b.t, 'pt', { sensitivity: 'base' }));
@@ -2783,6 +3027,8 @@ function dictOffset() { const t = $('.dict-tools'); return parseFloat(getCompute
 /* ================= SEARCH ================= */
 let SIDX = [];
 function buildIndex() {
+  RESUMO.mods.forEach(m => m.blocks.forEach(b => SIDX.push({ k: 'Resumão', m: m.id, t: `${MOD[m.id].short} · ${b.h}`, s: strip(b.items.join(' ')), n: norm(m.t + ' ' + b.h + ' ' + b.items.join(' ')), go: () => resJump('rs-' + m.id) })));
+  RESUMO.pacientes.forEach(p => SIDX.push({ k: 'Resumão', m: p.m, t: 'Paciente: ' + p.t, s: strip(p.what + ' ' + p.todo.join(' ')), n: norm(p.t + ' ' + p.what + ' ' + p.todo.join(' ')), go: () => resJump('rs-pac') }));
   DICT.forEach(d => SIDX.push({ k: 'Dicionário', m: d.m, t: d.t + (d.ext ? ' · ' + d.ext : ''), s: d.d, n: d.n, go: () => openDict(d.i) }));
   MODULES.forEach(m => {
     (TOPICS[m.id] || []).forEach((t, i) => SIDX.push({ k: 'Tópico', m: m.id, t: t.t, s: strip(t.b), n: norm(t.t + ' ' + t.s + ' ' + t.b), go: () => openTopic(m.id, i) }));
@@ -2802,7 +3048,7 @@ function doSearch(qs) {
   const box = $('#qres');
   const q = norm(qs); if (q.length < 2) { box.classList.remove('show'); return; }
   const terms = q.split(' ').filter(Boolean);
-  const res = SIDX.map(x => { let sc = 0; for (const t of terms) { if (!x.n.includes(t)) return null; sc += norm(x.t).includes(t) ? 5 : 1; } if (x.k === 'Tópico') sc += 2; if (x.k === 'Dicionário') sc += 3; return { x, sc }; }).filter(Boolean).sort((a, b) => b.sc - a.sc).slice(0, 14);
+  const res = SIDX.map(x => { let sc = 0; for (const t of terms) { if (!x.n.includes(t)) return null; sc += norm(x.t).includes(t) ? 5 : 1; } if (x.k === 'Tópico' || x.k === 'Resumão') sc += 2; if (x.k === 'Dicionário') sc += 3; return { x, sc }; }).filter(Boolean).sort((a, b) => b.sc - a.sc).slice(0, 14);
   const hl = s => { let out = s; terms.forEach(t => { const re = new RegExp('(' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'); out = out.replace(re, '<mark>$1</mark>'); }); return out; };
   const snip = s => { const i = norm(s).indexOf(terms[0]); const a = Math.max(0, i - 50); return (a ? '…' : '') + s.slice(a, a + 140) + '…'; };
   box.innerHTML = res.length ? res.map((r, i) => `<div class="sr-item" data-i="${i}"><div class="sr-k" style="color:${MOD[r.x.m].color}">${r.x.k} · ${MOD[r.x.m].short}</div><div class="sr-t">${hl(r.x.t)}</div><div class="sr-s">${hl(snip(r.x.s))}</div></div>`).join('') : '<div class="sr-empty">Nada encontrado. Tente outro termo (ex.: "auto-PEEP", "Venturi", "noradrenalina").</div>';
@@ -2818,6 +3064,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.search-wrap'))
 applyTheme(store.get('theme', 'dark'));
 buildNav();
 renderHome();
+renderResumoPage();
 MODULES.forEach(renderModule);
 renderFlashPage();
 renderDictPage();
